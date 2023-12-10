@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ejemplo-ci-cd
+  annotations:
+    networking.gke.io/load-balancer-type: "Internal"
+spec:
+  type: LoadBalancer
+  selector:
+    app:  ejemplo-ci-cd
+  ports:
+    - protocol: TCP
+      port: 5000
+      targetPort: 5000
+      name: api
+   

@@ -1,0 +1,34 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: ejemplo-ci-cd
+  namespace: default
+  labels:
+    app: ejemplo-ci-cd
+
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ejemplo-ci-cd
+  template:
+    metadata:
+      labels:
+        app: ejemplo-ci-cd
+    spec:  
+      restartPolicy: Always 
+      containers:
+      - name: ejemplo-ci-cd-service
+        image: us-east1-docker.pkg.dev/detektor-kubernetes-prod/images-detektor/prueba-ci-cd
+        #image: us-east1-docker.pkg.dev/project-prueba/images-prueba/prueba-ci-cd
+        resources:
+            requests:
+              memory: "30Mi"
+              cpu: "20m"
+            limits:
+              memory: "70Mi"
+              cpu: "120m"
+        ports:
+          - containerPort: 5000  
+             
+        

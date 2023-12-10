@@ -1,0 +1,52 @@
+steps:
+  - id: 'Build-rec'
+    name: "gcr.io/cloud-builders/docker"
+    args: ['build', '-t', '$_IMAGE_NAME:$SHORT_SHA', '-f', 'Dockerfile','.']
+
+  - name: 'python'
+    entrypoint: 'python'
+    args: ['-m', 'pip', 'install','-r', './requirements.txt']
+  - name: python
+    entrypoint: python
+    args: ['-m', 'pip', 'install', 'build', 'pytest', 'Flask', '--user']
+
+  - name: 'python'
+    entrypoint: 'python'
+    args: ['-m', 'pytest','prueba-unitaria.py', '--junitxml=${SHORT_SHA}_test_log.xml']
+
+    # push container imagen
+  - id: 'push-rec'
+    name: "gcr.io/cloud-builders/docker"
+    args: ['push', '$_IMAGE_NAME:$SHORT_SHA']
+
+  ####DESPLIEGUE Historicos #######
+  
+  - id: 'deploy'
+    name: "gcr.io/cloud-builders/gke-deploy"
+    args:
+    - run
+    - -o 
+    - /deploy/
+    - --namespace=$_NAMESPACE
+    - --filename=deploy/deploy.yaml
+    - --image=$_IMAGE_NAME:$SHORT_SHA
+    - --location=us-east1-b
+    - --cluster=$_CLUSTER
+  - id: 'service'
+    name: "gcr.io/cloud-builders/gke-deploy"
+    args:
+    - run
+    - -o 
+    - /service/
+    - --namespace=$_NAMESPACE
+    - --filename=service/service.yaml
+    - --image=$_IMAGE_NAME:$SHORT_SHA
+    - --location=us-east1-b
+    - --cluster=$_CLUSTER
+
+substitutions:
+  _IMAGE_NAME: us-east1-docker.pkg.dev/detektor-kubernetes-prod/images-detektor/prueba-ci-cd
+  _CLUSTER: latam-cluster-detektor
+  #_IMAGE_NAME: us-east1-docker.pkg.dev/project-prueba/images-prueba/prueba-ci-cd
+  _PAIS: default
+  _NAMESPACE: default
