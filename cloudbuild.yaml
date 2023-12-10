@@ -45,8 +45,8 @@ steps:
     - --cluster=$_CLUSTER
 
 substitutions:
-  _IMAGE_NAME: us-east1-docker.pkg.dev/detektor-kubernetes-prod/images-detektor/prueba-ci-cd
-  _CLUSTER: latam-cluster-detektor
-  #_IMAGE_NAME: us-east1-docker.pkg.dev/project-prueba/images-prueba/prueba-ci-cd
+
+  _CLUSTER: project-prueba
+  _IMAGE_NAME: us-east1-docker.pkg.dev/project-prueba/images-prueba/prueba-ci-cd
   _PAIS: default
   _NAMESPACE: default

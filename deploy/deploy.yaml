@@ -19,8 +19,7 @@ spec:
       restartPolicy: Always 
       containers:
       - name: ejemplo-ci-cd-service
-        image: us-east1-docker.pkg.dev/detektor-kubernetes-prod/images-detektor/prueba-ci-cd
-        #image: us-east1-docker.pkg.dev/project-prueba/images-prueba/prueba-ci-cd
+        image: us-east1-docker.pkg.dev/project-prueba/images-prueba/prueba-ci-cd
         resources:
             requests:
               memory: "30Mi"
